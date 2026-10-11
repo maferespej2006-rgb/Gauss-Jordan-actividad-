@@ -1,0 +1,54 @@
+public class GaussJordan {
+    
+    private double[][] matriz;
+    private int n;
+
+    public GaussJordan(double[][] matrizAumentada, int tamano) {
+        this.matriz = matrizAumentada;
+        this.n = tamano;
+    }
+
+    // Paso 1: Reutilizamos la eliminación gaussiana
+    public void triangularSuperior() {
+        Gauss.eliminacionGaussiana(matriz, n);
+    }
+
+    // Paso 2: Normalización de pivotes y barrido superior
+    public void gaussJordanCompleto() {
+        triangularSuperior();
+        
+        // Normalizar pivotes y eliminar coeficientes superiores
+        for (int i = n - 1; i >= 0; i--) {
+            double pivote = matriz[i][i];
+            for (int j = i; j <= n; j++) {
+                matriz[i][j] /= pivote;
+            }
+            
+            for (int j = i - 1; j >= 0; j--) {
+                double factor = matriz[j][i];
+                for (int k = i; k <= n; k++) {
+                    matriz[j][k] -= factor * matriz[i][k];
+                }
+            }
+        }
+    }
+
+    // Paso 3: Lectura directa de resultados
+    public double[] obtenerSolucion() {
+        double[] solucion = new double[n];
+        for (int i = 0; i < n; i++) {
+            solucion[i] = matriz[i][n];
+        }
+        return solucion;
+    }
+
+    // Imprimir matriz aumentada
+    public void imprimirMatriz() {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j <= n; j++) {
+                System.out.printf("%10.4f", matriz[i][j]);
+            }
+            System.out.println();
+        }
+    }
+}
