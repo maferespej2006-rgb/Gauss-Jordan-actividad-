@@ -1,0 +1,45 @@
+import java.util.Scanner;
+
+public class Principal {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("=== Método de Gauss-Jordan ===");
+        System.out.print("Ingresa el número de ecuaciones: ");
+        int n = scanner.nextInt();
+        
+        double[][] matriz = new double[n][n + 1];
+        
+        System.out.println("Ingresa los coeficientes y términos independientes:");
+        for (int i = 0; i < n; i++) {
+            System.out.println("Ecuación " + (i + 1) + ":");
+            for (int j = 0; j <= n; j++) {
+                if (j < n) {
+                    System.out.print("x" + (j + 1) + " = ");
+                } else {
+                    System.out.print("Término independiente = ");
+                }
+                matriz[i][j] = scanner.nextDouble();
+            }
+        }
+        
+        GaussJordan gaussJordan = new GaussJordan(matriz, n);
+        
+        System.out.println("\n--- Matriz original ---");
+        gaussJordan.imprimirMatriz();
+        
+        gaussJordan.gaussJordanCompleto();
+        
+        System.out.println("\n--- Matriz Identidad + Solución ---");
+        gaussJordan.imprimirMatriz();
+        
+        double[] solucion = gaussJordan.obtenerSolucion();
+        
+        System.out.println("\n=== Solución del Sistema ===");
+        for (int i = 0; i < n; i++) {
+            System.out.printf("x%d = %.6f\n", (i + 1), solucion[i]);
+        }
+        
+        scanner.close();
+    }
+}
